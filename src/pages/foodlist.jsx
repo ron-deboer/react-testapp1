@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PubSub from '../services/pubsub';
+
 import FoodStore from '../stores/foodstore';
 import FoodDataTable from '../components/fooddatatable';
-import PubSub from '../services/pubsub';
 
 function Foodlist(props) {
     const [foods, setFoods] = useState(FoodStore.getFoods());
@@ -21,11 +22,8 @@ function Foodlist(props) {
     return (
         <div className="is-full-screen text-center">
             <h1 className="">FOOD LIST</h1>
-            <FoodDataTable
-                data={foods.sort((i1, i2) => {
-                    return i1.name > i2.name ? 1 : -1;
-                })}
-            />
+            <FoodDataTable data={foods} />
+            {/* <pre className="text-left">{JSON.stringify(foods, null, 4)}</pre> */}
             <p>
                 <button className="button btn" onClick={() => FoodStore.fetchFoods()}>
                     RELOAD FOOD LIST

@@ -23,13 +23,31 @@ const FoodRepository = (function () {
                 };
             }
             return new Promise(async function (resolve, reject) {
-                const response = db.collection('Food');
-                const data = await response.get();
+                const collObj = db.collection('Food');
+                const data = await collObj.get();
                 const resp = data.docs.map((item) => {
                     const row = transform(item.data(), item.id);
                     return row;
                 });
                 resolve(resp);
+            });
+        }
+
+        insertFood(item) {
+            function transform(item) {
+                return {
+                    Name: item.name,
+                    Category: item.category,
+                    CaloriesPer100g: item.calories,
+                    CarbsPer100g: item.carbs,
+                };
+            }
+            const doc = transform(item);
+            return new Promise(async function (resolve, reject) {
+                const collObj = db.collection('Food');
+                const resp = await collObj.add(doc);
+                console.log(resp);
+                resolve(true);
             });
         }
     }

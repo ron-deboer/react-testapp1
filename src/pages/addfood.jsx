@@ -1,10 +1,13 @@
-import FoodStore from '../stores/foodstore';
-import FormField from '../components/FormField';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import PubSub from '../services/pubsub';
 
+import FoodStore from '../stores/foodstore';
+import FormField from '../components/FormField';
+
 export default function Addfood(props) {
-    const { getfoods, addfood, loadfoods } = FoodStore;
+    const { addFood } = FoodStore;
+    let navigate = useNavigate();
 
     let food = {
         category: '',
@@ -19,12 +22,14 @@ export default function Addfood(props) {
         { name: 'carbs', label: 'Carbs per 100g', type: 'number', isRequired: true, minlength: 1 },
     ];
     const onSubmit = () => {
-        let errors = '';
         const collection = document.querySelectorAll('#addfoodform input');
+        let data = {};
+        let errors = '';
         collection.forEach((item) => {
             item.focus();
             item.blur();
             errors += item.getAttribute('errors');
+            data[item.id] = item.value;
         });
         if (errors !== '') {
             setTimeout(() => {
@@ -34,7 +39,11 @@ export default function Addfood(props) {
                 });
             }, 50);
         } else {
+            data.calories = parseInt(data.calories);
+            data.carbs = parseFloat(data.carbs);
+            addFood(data);
             PubSub.emit(PubSub.topic.SHOW_SNACKBAR, { type: 'success', text: 'Add food Success' });
+            navigate('/foodlist');
         }
     };
 
@@ -58,7 +67,6 @@ export default function Addfood(props) {
                             />
                         );
                     })}
-
                     <div className="button primary" onClick={onSubmit} style={{ marginTop: 20 }}>
                         Submit
                     </div>
@@ -66,7 +74,7 @@ export default function Addfood(props) {
             </div>
             <div className="container is-center" style={{ marginTop: 20 }}>
                 <Link to="/foodlist" className="button btn">
-                    FOOD LIST
+                    BACK
                 </Link>
             </div>
         </div>

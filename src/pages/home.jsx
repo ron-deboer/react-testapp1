@@ -8,12 +8,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import PubSub from '../services/pubsub';
 
 function Home(props) {
-    let navigate = useNavigate();
     const { state, setUserAuth } = useContext(AppContext);
     const [signup, setSignUp] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    let navigate = useNavigate();
 
     const signIn = () => {
         signInWithEmailAndPassword(email, password).then((resp) => {

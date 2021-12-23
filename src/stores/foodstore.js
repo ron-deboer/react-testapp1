@@ -21,13 +21,18 @@ const FoodStore = (function () {
 
         fetchFoods = () => {
             FoodRepository.fetchAllFoods().then((data) => {
-                foods = data;
+                foods = data.sort((i1, i2) => {
+                    return i1.calories - i2.calories;
+                });
                 PubSub.emit(PubSub.topic.STORE_UPDATED, {});
             });
         };
 
         addFood = (food) => {
-            this.foods.push(food);
+            foods.push(food);
+            FoodRepository.insertFood(food).then(() => {
+                PubSub.emit(PubSub.topic.STORE_UPDATED, {});
+            });
         };
     }
     return FoodStore;
