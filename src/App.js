@@ -17,7 +17,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/foodlist" element={<Foodlist />} />
-                <Route path="/addfood" element={<AddFood />} />
+                <Route path="/addfood:id" element={<AddFood />} />
                 <Route path="/*" element={<Error404 />} />
             </Routes>
         </AppState>

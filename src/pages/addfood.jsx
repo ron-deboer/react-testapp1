@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import PubSub from '../services/pubsub';
 
@@ -6,6 +7,7 @@ import FoodStore from '../stores/foodstore';
 import FormField from '../components/FormField';
 
 export default function Addfood(props) {
+    const { id } = useParams();
     const { addFood } = FoodStore;
     let navigate = useNavigate();
 
@@ -15,14 +17,26 @@ export default function Addfood(props) {
         calories: '',
         carbs: '',
     };
+
     const form = [
-        { name: 'category', label: 'Category', type: 'text', isRequired: true, minlength: 3 },
+        {
+            name: 'category',
+            label: 'Category',
+            type: 'select',
+            options: ['Fruit', 'Vegetables', 'Nuts and Seeds'],
+            isRequired: true,
+        },
         { name: 'name', label: 'Name', type: 'text', isRequired: true, minlength: 3 },
         { name: 'calories', label: 'Calories per 100g', type: 'number', isRequired: true, minlength: 1 },
         { name: 'carbs', label: 'Carbs per 100g', type: 'number', isRequired: true, minlength: 1 },
     ];
+
+    useEffect(() => {
+        console.log('1111', id);
+    }, []);
+
     const onSubmit = () => {
-        const collection = document.querySelectorAll('#addfoodform input');
+        const collection = document.querySelectorAll('#addfoodform input, #addfoodform select');
         let data = {};
         let errors = '';
         collection.forEach((item) => {
@@ -64,6 +78,7 @@ export default function Addfood(props) {
                                 label={fld.label}
                                 isrequired={fld.isrequired}
                                 minlength={fld.minlength}
+                                options={fld.options}
                             />
                         );
                     })}

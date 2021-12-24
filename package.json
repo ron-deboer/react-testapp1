@@ -6,14 +6,16 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "firebase": "^9.6.1",
+    "firebase-tools": "^9.23.3",
     "react": "^17.0.2",
+    "react-data-table-component": "^7.4.6",
     "react-dom": "^17.0.2",
+    "react-firebase-hooks": "^4.0.1",
+    "react-router-dom": "^6.1.1",
     "react-scripts": "5.0.0",
-    "web-vitals": "^2.1.2",
-	"firebase": "^9.6.1",
-	"firebase-tools": "^9.23.3",        
-	"react-firebase-hooks": "^4.0.1",
-	"react-router-dom": "^6.1.1"	
+    "styled-components": "^5.3.3",
+    "web-vitals": "^2.1.2"
   },
   "scripts": {
     "start": "set PORT=3006 && react-scripts start",
@@ -22,9 +24,9 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-	"rules": {
-		"no-unused-vars": "off"
-	},	  
+    "rules": {
+      "no-unused-vars": "off"
+    },
     "extends": [
       "react-app",
       "react-app/jest"

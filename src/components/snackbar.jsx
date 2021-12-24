@@ -24,7 +24,7 @@ export default function Snackbar() {
         setTimeout(function () {
             x.classList.remove('show', 'show-error', 'show-success');
             x.classList.add('hide');
-        }, 3000);
+        }, 2000);
     };
 
     return (

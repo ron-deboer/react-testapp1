@@ -16,14 +16,14 @@ const FoodStore = (function () {
         }
 
         getFoods() {
-            return foods;
+            return foods.sort((i1, i2) => {
+                return i1.calories - i2.calories;
+            });
         }
 
         fetchFoods = () => {
             FoodRepository.fetchAllFoods().then((data) => {
-                foods = data.sort((i1, i2) => {
-                    return i1.calories - i2.calories;
-                });
+                foods = data;
                 PubSub.emit(PubSub.topic.STORE_UPDATED, {});
             });
         };

@@ -28,7 +28,7 @@ function Foodlist(props) {
                 <button className="button btn" onClick={() => FoodStore.fetchFoods()}>
                     RELOAD FOOD LIST
                 </button>
-                <Link to="/addfood" className="button btn">
+                <Link to="/addfood:0" className="button btn">
                     ADD FOOD
                 </Link>
             </p>

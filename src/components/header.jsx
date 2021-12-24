@@ -6,6 +6,7 @@ export default function Header(props) {
     const { state } = useContext(AppContext);
 
     let navMenu = null;
+    console.log(state);
     if (state.isAuth) {
         navMenu = (
             <div className="nav-right">
