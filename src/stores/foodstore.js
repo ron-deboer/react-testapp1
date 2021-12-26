@@ -15,6 +15,10 @@ const FoodStore = (function () {
             this.fetchFoods();
         }
 
+        getFood(id) {
+            return foods.find((x) => x.id === id);
+        }
+
         getFoods() {
             return foods.sort((i1, i2) => {
                 return i1.calories - i2.calories;
@@ -31,6 +35,14 @@ const FoodStore = (function () {
         addFood = (food) => {
             foods.push(food);
             FoodRepository.insertFood(food).then(() => {
+                PubSub.emit(PubSub.topic.STORE_UPDATED, {});
+            });
+        };
+
+        updateFood = (food) => {
+            const idx = foods.findIndex((x) => x.id === food.id);
+            foods[idx] = Object.assign({}, food);
+            FoodRepository.updateFood(food).then(() => {
                 PubSub.emit(PubSub.topic.STORE_UPDATED, {});
             });
         };

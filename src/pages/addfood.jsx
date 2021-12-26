@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+
 import PubSub from '../services/pubsub';
+import useBeforeFirstRender from '../hooks/usebeforefirstrender';
 
 import FoodStore from '../stores/foodstore';
 import FormField from '../components/FormField';
 
 export default function Addfood(props) {
-    const { id } = useParams();
-    const { addFood } = FoodStore;
+    const { pid } = useParams();
+    const { getFood, addFood, updateFood } = FoodStore;
     let navigate = useNavigate();
 
     let food = {
+        id: '',
         category: '',
         name: '',
         calories: '',
@@ -31,9 +34,19 @@ export default function Addfood(props) {
         { name: 'carbs', label: 'Carbs per 100g', type: 'number', isRequired: true, minlength: 1 },
     ];
 
-    useEffect(() => {
-        console.log('1111', id);
-    }, []);
+    useBeforeFirstRender(() => {
+        if (pid !== '0') {
+            food = getFood(pid);
+        } else {
+            food = {
+                id: '',
+                category: '',
+                name: '',
+                calories: '',
+                carbs: '',
+            };
+        }
+    });
 
     const onSubmit = () => {
         const collection = document.querySelectorAll('#addfoodform input, #addfoodform select');
@@ -55,8 +68,14 @@ export default function Addfood(props) {
         } else {
             data.calories = parseInt(data.calories);
             data.carbs = parseFloat(data.carbs);
-            addFood(data);
-            PubSub.emit(PubSub.topic.SHOW_SNACKBAR, { type: 'success', text: 'Add food Success' });
+            if (pid === '0') {
+                addFood(data);
+                PubSub.emit(PubSub.topic.SHOW_SNACKBAR, { type: 'success', text: 'Add food Success' });
+            } else {
+                data.id = pid;
+                updateFood(data);
+                PubSub.emit(PubSub.topic.SHOW_SNACKBAR, { type: 'success', text: 'Update food Success' });
+            }
             navigate('/foodlist');
         }
     };

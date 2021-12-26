@@ -4,6 +4,7 @@ const FoodRepository = (function () {
     /*
      * private members
      */
+    const COLLECTION_NAME = 'Food';
     const urls = {
         FoodList: '',
     };
@@ -23,7 +24,7 @@ const FoodRepository = (function () {
                 };
             }
             return new Promise(async function (resolve, reject) {
-                const collObj = db.collection('Food');
+                const collObj = db.collection(COLLECTION_NAME);
                 const data = await collObj.get();
                 const resp = data.docs.map((item) => {
                     const row = transform(item.data(), item.id);
@@ -44,9 +45,25 @@ const FoodRepository = (function () {
             }
             const doc = transform(item);
             return new Promise(async function (resolve, reject) {
-                const collObj = db.collection('Food');
+                const collObj = db.collection(COLLECTION_NAME);
                 const resp = await collObj.add(doc);
-                console.log(resp);
+                resolve(true);
+            });
+        }
+
+        updateFood(item) {
+            function transform(item) {
+                return {
+                    Name: item.name,
+                    Category: item.category,
+                    CaloriesPer100g: item.calories,
+                    CarbsPer100g: item.carbs,
+                };
+            }
+            const doc = transform(item);
+            return new Promise(async function (resolve, reject) {
+                let docObj = db.collection(COLLECTION_NAME).doc(`${item.id}`);
+                const resp = await docObj.update(doc);
                 resolve(true);
             });
         }

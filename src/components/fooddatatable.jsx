@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import _ from 'lodash';
 
 export default function FoodDataTable(props) {
     let navigate = useNavigate();
@@ -8,15 +9,17 @@ export default function FoodDataTable(props) {
         pagenum: 1,
         pagedata: [],
         filter: '',
+        filterdata: [],
     };
     const [config, setConfig] = useState(initialConfig);
+    const [filter, setFilter] = useState('');
 
     useEffect(() => {
         loadPageData(config);
     }, [props.data]);
 
     const pageNav = (direction) => {
-        let cfg = Object.assign({}, config);
+        let cfg = _.assign({}, config);
         if (direction === 'next') {
             cfg.pagenum++;
         } else if (direction === 'prev') {
@@ -31,15 +34,32 @@ export default function FoodDataTable(props) {
     };
 
     const loadPageData = (cfg) => {
-        let newcfg = Object.assign({}, cfg);
+        let newcfg = _.assign({}, cfg);
         const pgstart = (newcfg.pagenum - 1) * newcfg.rowsperpage;
         const pgend = pgstart + newcfg.rowsperpage;
-        newcfg.pagedata = props.data.slice(pgstart, pgend);
+        if (filter === '') {
+            cfg.filterdata = props.data;
+        }
+        newcfg.pagedata = cfg.filterdata.slice(pgstart, pgend);
         setConfig(newcfg);
     };
 
+    const filterData = (str) => {
+        setFilter(str);
+        const filtered = props.data.filter(function (o) {
+            return _.some(o, function (v) {
+                return _.toLower(v).indexOf(str) > -1;
+            });
+        });
+        let cfg = Object.assign({}, config);
+        cfg.pagenum = 1;
+        cfg.filterdata = filtered;
+        setConfig(cfg);
+        loadPageData(cfg);
+    };
+
     const editRow = (food) => {
-        navigate('/addfood:' + food.id);
+        navigate('/addfood/' + food.id);
     };
 
     return (
@@ -62,7 +82,12 @@ export default function FoodDataTable(props) {
                     <label>entries per page</label>
                 </div>
                 <div className="col-9 is-right">
-                    <input className="col-3" placeholder="Filter ..." defaultValue="" />
+                    <input
+                        className="col-3"
+                        placeholder="Filter ..."
+                        value={filter}
+                        onChange={(ev) => filterData(ev.target.value)}
+                    />
                 </div>
             </div>
             <table id="usertable" className="table table-bordered table-striped">

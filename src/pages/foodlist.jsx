@@ -21,14 +21,14 @@ function Foodlist(props) {
 
     return (
         <div className="is-full-screen text-center">
-            <h1 className="">FOOD LIST</h1>
+            <h1 className="">FOOD CALORIE LIST</h1>
             <FoodDataTable data={foods} />
             {/* <pre className="text-left">{JSON.stringify(foods, null, 4)}</pre> */}
             <p>
                 <button className="button btn" onClick={() => FoodStore.fetchFoods()}>
                     RELOAD FOOD LIST
                 </button>
-                <Link to="/addfood:0" className="button btn">
+                <Link to="/addfood/0" className="button btn">
                     ADD FOOD
                 </Link>
             </p>

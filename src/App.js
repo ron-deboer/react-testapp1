@@ -12,12 +12,12 @@ import AppState from './context/AppState';
 function App() {
     return (
         <AppState>
-            <Header className="header" name="diamond dev" />
+            <Header className="header" name="octagon" />
             <Snackbar />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/foodlist" element={<Foodlist />} />
-                <Route path="/addfood:id" element={<AddFood />} />
+                <Route path="/addfood/:pid" element={<AddFood />} />
                 <Route path="/*" element={<Error404 />} />
             </Routes>
         </AppState>
