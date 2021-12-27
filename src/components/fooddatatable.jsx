@@ -62,6 +62,10 @@ export default function FoodDataTable(props) {
         navigate('/addfood/' + food.id);
     };
 
+    const deleteRow = (food) => {
+        navigate('/addfood/' + food.id);
+    };
+
     return (
         <div className="container table-container">
             <div className="row">
@@ -107,7 +111,7 @@ export default function FoodDataTable(props) {
                             <td>{item.name}</td>
                             <td>{item.calories}</td>
                             <td>{item.carbs}</td>
-                            <td>
+                            <td style={{ textAlign: 'center' }}>
                                 <div
                                     className="tag bg-primary text-white is-small"
                                     onClick={() => editRow(item)}
@@ -115,17 +119,25 @@ export default function FoodDataTable(props) {
                                     Edit
                                 </div>
                             </td>
+                            <td style={{ textAlign: 'center' }}>
+                                <div
+                                    className="tag bg-warning text-white is-small"
+                                    onClick={() => deleteRow(item)}
+                                >
+                                    X
+                                </div>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             <div className="row is-full-width is-right pagination">
-                <div className="col-1 pagenav" onClick={() => pageNav('prev')}>
+                <div className="col-1 pagenav is-right" onClick={() => pageNav('prev')}>
                     {' '}
                     &#9664;{' '}
                 </div>
                 <div className="col-1"> PAGE : {config.pagenum} </div>
-                <div className="col-1 pagenav" onClick={() => pageNav('next')}>
+                <div className="col-1 pagenav is-left" onClick={() => pageNav('next')}>
                     {' '}
                     &#9654;{' '}
                 </div>
